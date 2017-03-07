@@ -30,7 +30,7 @@ const limit = 200,
 let pageIndex = 0;
 
 let writer = CSVWriter({
-    headers: 'id name link city country members organizer_id organizer_name'.split(' ')
+    headers: 'id name link city state country members organizer_id organizer_name'.split(' ')
 });
 writer.pipe(fs.createWriteStream(output));
 
@@ -56,7 +56,8 @@ function getNextPage() {
                 row.name,
                 row.link,
                 row.city,
-                row.city,
+                row.state,
+                row.country,
                 row.members,
                 row.organizer.id,
                 row.organizer.name
