@@ -1,0 +1,45 @@
+{{#power-select selected=activeQuestion options=questions onchange=(action "selectQuestion") as |question|}}
+    {{question}}
+{{/power-select}}
+
+<div class="options">
+    <span>
+        <label>Max Answers:</label>
+        {{input type="number" value=responseLimit min=1}}
+    </span>
+
+    <span>
+        <label>Use Percentages:</label>
+        {{input type="checkbox" checked=usePercentages}}
+    </span>
+</div>
+
+{{#if chartData}}
+    {{viz-bar
+        data=chartData
+        title=activeQuestion
+        yAxisLabel=(if usePercentages "Percent" "Responses")
+        theme=chartTheme
+        showLegend=(gt chartData.length 1)
+    }}
+
+    <div class="table">
+        <div class="row header">
+            <span>Answer</span>
+            {{#each years as |year|}}
+                <span>{{year}}</span>
+            {{/each}}
+        </div>
+        {{#each activeResponsesByYear as |response|}}
+            <div class="row">
+                <span>{{response.a}}</span>
+                {{#each years as |year|}}
+                    <span>{{format-number (get response.years year)}}</span>
+                {{/each}}
+            </div>
+        {{/each}}
+    </div>
+
+{{/if}}
+
+
