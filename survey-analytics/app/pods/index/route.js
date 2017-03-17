@@ -1,14 +1,12 @@
 import Ember from 'ember';
 import {csvParseRows} from 'd3-dsv';
 import {storageFor} from 'ember-local-storage';
+import config from 'survey-analytics/config/environment';
 
 const {inject, Route, RSVP: {Promise}} = Ember;
 
-// TODO can't fetch from google due to CORS
-// const RESULTS_2015_URL =
-// 'https://docs.google.com/spreadsheets/d/13WjIlh6j4srKx8wDSsYUgULOiUZw3vKBJRLxESXNFW0/export?format=csv&id=13WjIlh6j4srKx8wDSsYUgULOiUZw3vKBJRLxESXNFW0&gid=1513921926';
-const RESULTS_2015_URL = '/assets/ember-survey-2015.csv';
-const RESULTS_2016_URL = 'http://emberjs.com/ember-community-survey-2016/ember-community-survey-2016-results.csv';
+const RESULTS_2015_URL = `${config.rootURL}/assets/ember-survey-2015.csv`.replace(/\/\//g, '/');
+const RESULTS_2016_URL = '//emberjs.com/ember-community-survey-2016/ember-community-survey-2016-results.csv';
 
 export default Route.extend({
 

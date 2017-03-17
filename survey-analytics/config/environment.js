@@ -43,7 +43,7 @@ module.exports = function (environment) {
     }
 
     if (environment === 'production') {
-
+        ENV.rootURL = `/survey-scratch-pad/${ENV.modulePrefix}/`;
     }
 
     ENV.podModulePrefix = ENV.modulePrefix + '/pods';

@@ -1,7 +1,6 @@
 # survey-analytics
 
-This README outlines the details of collaborating on this Ember application.
-A short introduction of this app could easily go here.
+[View Live App](https://201-created.github.io/survey-scratch-pad/survey-analytics/)
 
 ![Screnshot](https://cloud.githubusercontent.com/assets/174619/24044933/b3176e12-0af3-11e7-9053-87a17a4c6e0f.png)
 

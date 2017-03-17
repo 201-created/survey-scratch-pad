@@ -90,7 +90,14 @@ export default Component.extend({
                     .sortBy("count").reverse();
                 return {year: responses.get("year"), answers: answerItems};
             });
+        } else {
+            // select the first by default
+            if (this.get("questions.length")) {
+                this.selectQuestion(this.get("questions.0"));
+            }
+            return [];
         }
+
     }),
 
     activeResponsesByYear: computed("activeResponses", function () {
@@ -112,7 +119,6 @@ export default Component.extend({
     }),
 
 
-    // TODO update the following properties when we support multiple years
     chartData: computed("activeResponses.[]", "responseLimit", "usePercentages", {
 
         get() {
@@ -139,12 +145,15 @@ export default Component.extend({
         return TABLE_META.filter(d => d.question).map(d => d.question);
     }),
 
+    selectQuestion(question){
+        Ember.run.later(_ => this.get("onQuestionChange")(question), 100);
+    },
+
     actions: {
         selectQuestion(question){
             // do this to invalidate the chart, to force a new highcharts component
             this.set("chartData", undefined);
-
-            Ember.run.later(_ => this.get("onQuestionChange")(question), 100);
+            this.selectQuestion(question);
         }
     }
 
