@@ -6,7 +6,7 @@ import config from 'survey-analytics/config/environment';
 const {inject, Route, RSVP: {Promise}} = Ember;
 
 const RESULTS_2015_URL = `${config.rootURL}/assets/ember-survey-2015.csv`.replace(/\/\//g, '/');
-const RESULTS_2016_URL = '//emberjs.com/ember-community-survey-2016/ember-community-survey-2016-results.csv';
+const RESULTS_2016_URL = `${config.rootURL}/assets/ember-survey-2016.csv`.replace(/\/\//g, '/');
 
 export default Route.extend({
 
