@@ -5,8 +5,8 @@ import config from 'survey-analytics/config/environment';
 
 const {inject, Route, RSVP: {Promise}} = Ember;
 
-const RESULTS_2015_URL = `${config.rootURL}/assets/ember-survey-2015.csv`.replace(/\/\//g, '/');
-const RESULTS_2016_URL = `${config.rootURL}/assets/ember-survey-2016.csv`.replace(/\/\//g, '/');
+const URLS = [2015, 2016].map(
+    year => `${config.rootURL}/assets/ember-survey-${year}.csv`.replace(/\/\//g, '/'));
 
 export default Route.extend({
 
@@ -15,7 +15,7 @@ export default Route.extend({
 
     model(){
 
-        return Promise.all([RESULTS_2015_URL, RESULTS_2016_URL].map(url => {
+        return Promise.all(URLS.map(url => {
             return this.get("ajax").request(url, {
                 method: 'GET',
                 mimeType: 'text/csv',

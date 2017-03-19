@@ -26,6 +26,7 @@ const Responses = ObjectProxy.extend({
                             });
                             break;
                         case 2016:
+                        case 2017:
                             r.push({
                                 q: col.question,
                                 a: cleanup(row.slice(yearMeta.col, yearMeta.col + (yearMeta.cols || 1)))
@@ -66,6 +67,7 @@ export default Component.extend({
         let question = this.get("activeQuestion");
         if (question) {
 
+            // for each year...
             return this.get("responses").map(responses => {
                 let answers = [];
 
