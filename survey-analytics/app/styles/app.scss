@@ -22,22 +22,34 @@ body > div.ember-view {
 .survey-main {
 
     > * {
-        margin: 1rem 0;
+        padding: 1rem 0;
     }
 
     .options {
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        align-items: center;
 
-        > span {
+        background-color: #e46651;
+
+        padding: 0.5rem;
+
+        > * {
+            margin: 1rem 0;
+        }
+
+        .row {
+
             display: flex;
-            flex-grow: 1;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
 
-            label {
-                margin: 0 0.5rem;
-                align-self: center;
+            > span {
+                display: flex;
+                flex-grow: 1;
+
+                label {
+                    margin: 0 0.5rem;
+                    align-self: center;
+                }
             }
         }
     }

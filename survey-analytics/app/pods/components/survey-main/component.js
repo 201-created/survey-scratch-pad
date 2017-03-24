@@ -61,7 +61,14 @@ export default Component.extend({
         return data.map(yearData => Responses.create({content: yearData}));
     }),
 
-    years: computed("chartData.[]", function () {
+    years: computed(function () {
+        return TABLE_META.filter(d => d.hasOwnProperty("years")).map(d => Object.keys(d.years)).reduce((arr, years) => {
+            Array.prototype.push.apply(arr, years);
+            return arr;
+        }).uniq().sort()
+    }),
+
+    chartYears: computed("chartData.[]", function () {
         return this.get("chartData").mapBy("_year").sort();
     }),
 
@@ -145,8 +152,13 @@ export default Component.extend({
 
     chartTheme: chartTheme,
 
-    questions: computed(function () {
-        return TABLE_META.filter(d => d.question).map(d => d.question);
+    questions: computed("selectedYears", function () {
+        let selectedYears = this.get("selectedYears");
+        let filter = _ => true;
+        if (selectedYears && selectedYears.length) {
+            filter = d => Object.keys(d.years).some(k => selectedYears.includes(k));
+        }
+        return TABLE_META.filter(d => d.question && filter(d)).map(d => d.question);
     }),
 
     selectQuestion(question){
