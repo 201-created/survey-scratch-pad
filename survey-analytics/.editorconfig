@@ -14,5 +14,5 @@ insert_final_newline = false
 [*.{diff,md}]
 trim_trailing_whitespace = false
 
-[package.json]
+[{package.json,config/environment.js}]
 indent_size = 2
