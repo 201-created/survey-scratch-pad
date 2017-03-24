@@ -18,20 +18,22 @@ const Responses = ObjectProxy.extend({
                     let yearMeta = col.years[year];
 
                     switch (+year) {
-                        case 2015:
+                        case 2015: {
                             let value = row[yearMeta.col];
                             r.push({
                                 q: col.question,
                                 a: cleanup(value.split(','))
                             });
                             break;
+                        }
                         case 2016:
-                        case 2017:
+                        case 2017: {
                             r.push({
                                 q: col.question,
                                 a: cleanup(row.slice(yearMeta.col, yearMeta.col + (yearMeta.cols || 1)))
                             });
                             break;
+                        }
                     }
                 }
             }

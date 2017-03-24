@@ -5,7 +5,7 @@ import config from 'survey-analytics/config/environment';
 
 const {inject, Route, RSVP: {Promise}} = Ember;
 
-const URLS = [2015, 2016].map(
+const URLS = [2015, 2016, 2017].map(
     year => `${config.rootURL}/assets/ember-survey-${year}.csv`.replace(/\/\//g, '/'));
 
 export default Route.extend({
@@ -21,8 +21,9 @@ export default Route.extend({
                 mimeType: 'text/csv',
                 dataType: 'text',
             }).then(results => csvParseRows(results));
-        })).then(([rows2015, rows2016]) => {
+        })).then(([rows2015, rows2016, rows2017]) => {
             return [
+                {year: "2017", rows: rows2017},
                 {year: "2016", rows: rows2016},
                 {year: "2015", rows: rows2015}
             ];

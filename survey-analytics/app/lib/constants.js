@@ -192,25 +192,34 @@ export const TABLE_META = [
     {
         question: "What is your preferred hosting provider for Ember app assets?",
         cols: 12,
-        years: {2015: {col: 35}, 2016: {col: 279, cols: 12}}
+        years: {2015: {col: 35}, 2016: {col: 279, cols: 12}, 2017: {col: 319, cols: 14}}
     },
     {
         question: "Where is source code for your projects hosted?",
         cols: 6,
-        years: {2015: {col: 37}, 2016: {col: 291, cols: 6}}
+        years: {2015: {col: 37}, 2016: {col: 291, cols: 6}, 2017: {col: 333, cols: 14}}
+    },
+    {
+        question: "How is the source code for your Ember projects stored?",
+        cols: 6,
+        years: {2017: {col: 347, cols: 3}}
     },
     {
         question: "What method do you rely on for search engine indexing?",
         cols: 6,
-        years: {2015: {col: 38}, 2016: {col: 297, cols: 6}}
+        years: {2015: {col: 38}, 2016: {col: 297, cols: 6}, 2017: {col: 351, cols: 7}}
     },
     {
         question: "How many addons have you written (including private, unpublished libraries)?",
-        years: {2015: {col: 39}, 2016: {col: 303}}
+        years: {2015: {col: 39}, 2016: {col: 303}, 2016: {col: 358}}
     },
     {
         question: "How many addons have you published publicly?",
-        years: {2015: {col: 40}, 2016: {col: 304}}
+        years: {2015: {col: 40}, 2016: {col: 304}, 2016: {col: 359}}
+    },
+    {
+        question: "How are your addons tested?",
+        years: {2017: {col: 360, cols: 5}}
     },
     {
         question: "Are your addons unit tested?",
@@ -223,12 +232,12 @@ export const TABLE_META = [
     {
         question: "What versions of Ember does your most successful addon support?",
         cols: 17,
-        years: {2016: {col: 307, cols: 17}}
+        years: {2016: {col: 307, cols: 17}, 2017: {col: 365, cols: 19}}
     },
     {
         question: "What browser versions does your most successful addon support?",
         cols: 7,
-        years: {2016: {col: 324, cols: 7}}
+        years: {2016: {col: 324, cols: 7}, 2017: {col: 384, cols: 8}}
     },
     {
         label: "Start Date",
