@@ -37,9 +37,11 @@ export default Route.extend({
 
     actions: {
         changeQuestion(question){
-            this.setProperties({
-                "settings.question": question
-            });
+            this.set("settings.question", question);
+        },
+
+        changeFilter(response){
+            this.set("settings.filter", response ? {q: this.get("settings.question"), a: response.a} : undefined);
         }
     }
 

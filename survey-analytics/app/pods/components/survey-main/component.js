@@ -9,7 +9,7 @@ const Responses = ObjectProxy.extend({
         let rows = this.get("rows");
         let year = this.get("year");
 
-        let cleanup = answers => answers.filter(s => s).map(s => s.trim().replace(/–/g, '-'));
+        let cleanup = answers => answers.filter(s => s).map(s => s.trim().replace(/–/g, '-').replace(/’/g, "'"));
 
         return rows.slice(1, rows.length).map(row => {
             let r = [];
@@ -72,7 +72,8 @@ export default Component.extend({
         return this.get("chartData").mapBy("_year").sort();
     }),
 
-    activeResponses: computed("responses", "activeQuestion", function () {
+    activeResponses: computed("responses", "activeQuestion", "filter", function () {
+        let filter = this.get("filter");
         let question = this.get("activeQuestion");
         if (question) {
 
@@ -81,7 +82,16 @@ export default Component.extend({
                 let answers = [];
 
                 // enumerate all of the answers into a single array
-                responses.get("data").map(result => result.findBy("q", question)).filter(a => a)
+                let data = responses.get("data");
+
+                if (filter) {
+                    data = data.filter(result => {
+                        let q = result.findBy("q", filter.q);
+                        return q && q.a && q.a.includes(filter.a);
+                    });
+                }
+
+                data.map(result => result.findBy("q", question)).filter(a => a)
                     .forEach(a => Array.prototype.push.apply(answers, a.a));
 
                 // count the unique answers
@@ -141,7 +151,7 @@ export default Component.extend({
                 data: responses.answers.slice(0, this.get("responseLimit"))
                     .map(r => ({name: r.a, y: usePercentages ? Math.round(r.pct) : r.count})),
                 _year: responses.year
-            })).filter(r => r.data.length);
+            })).filter(r => r.data.length).sortBy("_year");
         },
 
         set(key, value) {
@@ -162,7 +172,11 @@ export default Component.extend({
     }),
 
     selectQuestion(question){
-        Ember.run.later(_ => this.get("onQuestionChange")(question), 100);
+
+        let onQuestionChange = this.get("onQuestionChange");
+        if (onQuestionChange) {
+            Ember.run.later(_ => onQuestionChange(question), 100);
+        }
     },
 
     actions: {
@@ -170,6 +184,13 @@ export default Component.extend({
             // do this to invalidate the chart, to force a new highcharts component
             this.set("chartData", undefined);
             this.selectQuestion(question);
+        },
+
+        filterByResponse(response){
+            let onFilterChange = this.get("onFilterChange");
+            if (onFilterChange) {
+                onFilterChange(response);
+            }
         }
     }
 

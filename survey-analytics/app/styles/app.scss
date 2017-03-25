@@ -25,9 +25,17 @@ body > div.ember-view {
         padding: 1rem 0;
     }
 
+    i {
+        cursor: pointer;
+
+        &:not(:hover) {
+            color: lighten(black, 40%);
+        }
+    }
+
     .options {
 
-        background-color: #e46651;
+        background-color: $ember-orange;
 
         padding: 0.5rem;
 
@@ -42,7 +50,7 @@ body > div.ember-view {
             justify-content: center;
             align-items: center;
 
-            > span {
+            > * {
                 display: flex;
                 flex-grow: 1;
 
@@ -70,9 +78,25 @@ body > div.ember-view {
             }
 
             > span {
+                display: flex;
+                flex: 1 0 1rem;
                 width: 50%;
                 padding: 0.2rem 1rem;
+
+                &.shrink {
+                    flex: 0 1 1rem;
+                }
             }
+        }
+    }
+
+    .filter {
+        .question, .answer {
+            border-bottom: 1px dotted $ember-orange;
+            font-weight: 600;
+        }
+        .question {
+            cursor: pointer;
         }
     }
 }

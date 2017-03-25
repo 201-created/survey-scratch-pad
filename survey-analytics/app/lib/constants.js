@@ -23,7 +23,7 @@ export const TABLE_META = [
     },
     {
         question: "How long have you been working with Ember?",
-        years: {2016: {col: 31}}
+        years: {2016: {col: 31}, 2017: {col: 23}}
     },
     {
         question: "Grade your knowledge of JavaScript",

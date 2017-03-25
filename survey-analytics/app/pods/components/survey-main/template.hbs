@@ -24,11 +24,21 @@
         </span>--}}
 
         <span>
-        <label>Use Percentages:</label>
+            <label>Use Percentages:</label>
             {{input type="checkbox" checked=usePercentages}}
-    </span>
+        </span>
     </div>
 </div>
+
+{{#if filter}}
+    <div class="filter">Showing results that responded <span
+        class="answer">{{filter.a}}</span> to
+        <span class="question" title="Click to show question"
+              onclick={{action "selectQuestion" filter.q}}>{{filter.q}}
+        </span>
+        {{material-icon "cancel" onclick=(action "filterByResponse" undefined) title="Clear filter"}}
+    </div>
+{{/if}}
 
 {{#if chartData}}
     {{viz-bar
@@ -41,6 +51,7 @@
 
     <div class="table">
         <div class="row header">
+            <span class="shrink">Filter</span>
             <span>Answer</span>
             {{#each chartYears as |year|}}
                 <span>{{year}}</span>
@@ -48,6 +59,8 @@
         </div>
         {{#each activeResponsesByYear as |response|}}
             <div class="row">
+                <span class="shrink">{{material-icon "filter_list" title="Click to filter"
+                                                     onclick=(action "filterByResponse" response)}}</span>
                 <span>{{response.a}}</span>
                 {{#each chartYears as |year|}}
                     <span>{{format-number (get response.years year)}}</span>
