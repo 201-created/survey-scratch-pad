@@ -49,6 +49,8 @@
         showLegend=(gt chartData.length 1)
     }}
 
+    {{material-icon "get_app" title="Export data as CSV" classNames="right" onclick=(action "exportData")}}
+
     <div class="table">
         <div class="row header">
             <span class="shrink">Filter</span>
@@ -63,7 +65,12 @@
                                                      onclick=(action "filterByResponse" response)}}</span>
                 <span>{{response.a}}</span>
                 {{#each chartYears as |year|}}
-                    <span>{{format-number (get response.years year)}}</span>
+                    <span>
+                        {{format-number (get response.years year)}}
+                        {{#if (and usePercentages (get response.yearsPct year))}}
+                            ({{get response.yearsPct year}}%)
+                        {{/if}}
+                    </span>
                 {{/each}}
             </div>
         {{/each}}

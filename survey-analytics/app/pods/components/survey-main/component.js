@@ -2,7 +2,7 @@ import Ember from 'ember';
 import chartTheme from 'survey-analytics/themes/ember-theme';
 import {TABLE_META} from 'survey-analytics/lib/constants';
 
-const {Component, computed, ObjectProxy} = Ember;
+const {Component, computed, ObjectProxy, inject} = Ember;
 
 const Responses = ObjectProxy.extend({
     data: computed("rows", function () {
@@ -47,6 +47,8 @@ export default Component.extend({
 
     classNames: ["survey-main"],
 
+    csvService: inject.service('csv'),
+
     responseLimit: computed(function () {
         throw new Error("You must supply `responseLimit` as a parameter");
     }),
@@ -68,8 +70,13 @@ export default Component.extend({
         }).uniq().sort()
     }),
 
-    chartYears: computed("chartData.[]", function () {
-        return this.get("chartData").mapBy("_year").sort();
+    chartYears: computed("chartData.[]", "selectedYears", function () {
+        let selectedYears = this.get("selectedYears");
+        let filter = _ => true;
+        if (selectedYears && selectedYears.length) {
+            filter = d => selectedYears.includes(d);
+        }
+        return this.get("chartData").mapBy("_year").sort().filter(filter);
     }),
 
     activeResponses: computed("responses", "activeQuestion", "filter", function () {
@@ -83,6 +90,7 @@ export default Component.extend({
 
                 // enumerate all of the answers into a single array
                 let data = responses.get("data");
+                let totalResponses = data.length;
 
                 if (filter) {
                     data = data.filter(result => {
@@ -105,9 +113,12 @@ export default Component.extend({
                     return map;
                 }, {});
 
-                let total = Object.keys(counts).reduce((sum, k) => sum + counts[k].count, 0);
                 let answerItems = Object.keys(counts)
-                    .map(k => ({a: counts[k].label, count: counts[k].count, pct: 100 * counts[k].count / total}))
+                    .map(k => ({
+                        a: counts[k].label,
+                        count: counts[k].count,
+                        pct: Math.round(10000 * counts[k].count / totalResponses) / 100
+                    }))
                     .sortBy("count").reverse();
                 return {year: responses.get("year"), answers: answerItems};
             });
@@ -121,18 +132,25 @@ export default Component.extend({
 
     }),
 
-    activeResponsesByYear: computed("activeResponses", function () {
+    activeResponsesByYear: computed("activeResponses", "selectedYears", function () {
         let activeResponses = this.get("activeResponses");
+        let selectedYears = this.get("selectedYears");
+        let filter = _ => true;
+        if (selectedYears && selectedYears.length) {
+            filter = d => selectedYears.includes(d.year);
+        }
+
         // I know this is inefficient, so will come back later and fix
         let answers = [];
-        activeResponses.forEach(r => {
+        activeResponses.filter(filter).forEach(r => {
             r.answers.forEach(a => {
                 let model = answers.findBy("a", a.a);
                 if (!model) {
-                    model = {a: a.a, count: 0, years: {}};
+                    model = {a: a.a, count: 0, years: {}, yearsPct: {}};
                     answers.push(model);
                 }
                 model.years[r.year] = a.count;
+                model.yearsPct[r.year] = a.pct;
                 model.count += a.count;
             });
         });
@@ -149,7 +167,7 @@ export default Component.extend({
             return activeResponses.map(responses => ({
                 name: `${responses.year} Data`,
                 data: responses.answers.slice(0, this.get("responseLimit"))
-                    .map(r => ({name: r.a, y: usePercentages ? Math.round(r.pct) : r.count})),
+                    .map(r => ({name: r.a, y: usePercentages ? r.pct : r.count})),
                 _year: responses.year
             })).filter(r => r.data.length).sortBy("_year");
         },
@@ -179,6 +197,23 @@ export default Component.extend({
         }
     },
 
+    tableData: computed("activeResponsesByYear", function () {
+        let rows = [];
+        let {activeResponsesByYear, chartYears} = this.getProperties("activeResponsesByYear", "chartYears");
+        rows.push(["Answer"].concat(chartYears).concat(chartYears.map(y => `${y} Percent`)));
+        activeResponsesByYear.forEach(response => {
+            let row = [response.a];
+            chartYears.forEach(year => {
+                row.push(response.years.hasOwnProperty(year) ? response.years[year] : null);
+            });
+            chartYears.forEach(year => {
+                row.push(response.yearsPct.hasOwnProperty(year) ? response.yearsPct[year] : null);
+            });
+            rows.push(row);
+        });
+        return rows;
+    }),
+
     actions: {
         selectQuestion(question){
             // do this to invalidate the chart, to force a new highcharts component
@@ -191,6 +226,11 @@ export default Component.extend({
             if (onFilterChange) {
                 onFilterChange(response);
             }
+        },
+
+        exportData(){
+            let data = this.get("tableData");
+            this.get("csvService").export(data, {fileName: "export.csv", withSeparator: false});
         }
     }
 

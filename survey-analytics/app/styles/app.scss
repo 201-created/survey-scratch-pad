@@ -31,6 +31,12 @@ body > div.ember-view {
         &:not(:hover) {
             color: lighten(black, 40%);
         }
+
+        &.right {
+            float: right;
+            margin: 0;
+            padding: 0;
+        }
     }
 
     .options {

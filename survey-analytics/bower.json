@@ -2,6 +2,8 @@
   "name": "survey-analytics",
   "dependencies": {
     "blob-polyfill": "^1.0.20150320",
-    "material-design-icons": "3.0.1"
+    "material-design-icons": "3.0.1",
+    "file-saver": "^1.3.3",
+    "js-xlsx": "~0.8.0"
   }
 }
