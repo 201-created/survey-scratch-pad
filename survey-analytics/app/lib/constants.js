@@ -3,6 +3,10 @@ export const TABLE_META = [
         label: "ID"
     },
     {
+        question: "How likely are you to recommend Ember to your friends and colleagues?",
+        years: {2017: {col: 1}}
+    },
+    {
         question: "In which region do you live?",
         years: {2015: {col: 1}, 2016: {col: 1}, 2017: {col: 392, cols: 8}}
     },
@@ -211,11 +215,11 @@ export const TABLE_META = [
     },
     {
         question: "How many addons have you written (including private, unpublished libraries)?",
-        years: {2015: {col: 39}, 2016: {col: 303}, 2016: {col: 358}}
+        years: {2015: {col: 39}, 2016: {col: 303}, 2017: {col: 358}}
     },
     {
         question: "How many addons have you published publicly?",
-        years: {2015: {col: 40}, 2016: {col: 304}, 2016: {col: 359}}
+        years: {2015: {col: 40}, 2016: {col: 304}, 2017: {col: 359}}
     },
     {
         question: "How are your addons tested?",
