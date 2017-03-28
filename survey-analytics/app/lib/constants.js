@@ -47,6 +47,10 @@ export const TABLE_META = [
         years: {2015: {col: 6}, 2016: {col: 42}, 2017: {col: 45}}
     },
     {
+        question: "When starting your most recent job...",
+        years: {2017: {col: 46}}
+    },
+    {
         question: "Choose the option(s) that best describe your employment situation",
         cols: 6,
         years: {2015: {col: 7}, 2016: {col: 43, cols: 6}, 2017: {col: 56, cols: 8}}
